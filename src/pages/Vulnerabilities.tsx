@@ -3,13 +3,11 @@ import React from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import { Link } from "react-router-dom";
 import { VulnerabilityStats } from "@/components/vulnerabilities/VulnerabilityStats";
 import { VulnerabilityTabs } from "@/components/vulnerabilities/VulnerabilityTabs";
 import { useVulnerabilityStats } from "@/hooks/useVulnerabilityStats";
 import { useVulnerabilities } from "@/hooks/useVulnerabilities";
+import AddVulnerabilityForm from "@/components/vulnerabilities/AddVulnerabilityForm";
 
 const Vulnerabilities = () => {
   const { user } = useAuth();
@@ -18,7 +16,8 @@ const Vulnerabilities = () => {
     vulnerabilities, 
     loading, 
     getFilteredVulnerabilities,
-    formatTimeAgo
+    formatTimeAgo,
+    refetchVulnerabilities
   } = useVulnerabilities();
   
   return (
@@ -35,11 +34,7 @@ const Vulnerabilities = () => {
               <h2 className="text-2xl md:text-3xl font-bold mb-2">Vulnerabilities</h2>
               <p className="text-muted-foreground">Monitor and manage security vulnerabilities</p>
             </div>
-            <Button asChild>
-              <Link to="/add-vulnerability">
-                <Plus className="h-4 w-4 mr-1" /> Add Vulnerability
-              </Link>
-            </Button>
+            <AddVulnerabilityForm onSuccess={refetchVulnerabilities} />
           </div>
           
           <VulnerabilityStats stats={stats} />
