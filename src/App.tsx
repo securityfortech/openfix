@@ -15,6 +15,7 @@ import AddVulnerability from "./pages/AddVulnerability";
 import Assets from "./pages/Assets";
 import Assistant from "./pages/Assistant";
 import Settings from "./pages/Settings";
+import Teams from "./pages/Teams";
 import { useState } from "react";
 
 // Protected route component
@@ -56,6 +57,11 @@ const AppRoutes = () => {
       <Route path="/assets" element={
         <ProtectedRoute>
           <Assets />
+        </ProtectedRoute>
+      } />
+      <Route path="/teams" element={
+        <ProtectedRoute>
+          <Teams />
         </ProtectedRoute>
       } />
       <Route path="/assistant" element={

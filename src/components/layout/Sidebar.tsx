@@ -1,8 +1,7 @@
-
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LogOut, Settings, Shield, Home, Database, Bot } from "lucide-react";
+import { LogOut, Settings, Shield, Home, Database, Bot, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link, useLocation } from "react-router-dom";
@@ -63,6 +62,7 @@ const Sidebar = () => {
     { path: "/dashboard", icon: Home, label: "Dashboard" },
     { path: "/vulnerabilities", icon: Shield, label: "Vulnerabilities", badge: vulnerabilityCount },
     { path: "/assets", icon: Database, label: "Assets" },
+    { path: "/teams", icon: Users, label: "Teams" },
     { path: "/assistant", icon: Bot, label: "Assistant" }
   ];
   

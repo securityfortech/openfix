@@ -17,7 +17,6 @@ const Vulnerabilities = () => {
   const { 
     vulnerabilities, 
     loading, 
-    handleScanNow,
     getFilteredVulnerabilities,
     formatTimeAgo
   } = useVulnerabilities();
@@ -50,7 +49,6 @@ const Vulnerabilities = () => {
             loading={loading}
             getFilteredVulnerabilities={getFilteredVulnerabilities}
             formatTimeAgo={formatTimeAgo}
-            handleScanNow={handleScanNow}
           />
         </main>
       </div>
