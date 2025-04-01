@@ -37,8 +37,10 @@ const Vulnerabilities = () => {
               <h2 className="text-2xl md:text-3xl font-bold mb-2">Vulnerabilities</h2>
               <p className="text-muted-foreground">Monitor and manage security vulnerabilities</p>
             </div>
-            <Button as={Link} to="/add-vulnerability">
-              <Plus className="h-4 w-4 mr-1" /> Add Vulnerability
+            <Button asChild>
+              <Link to="/add-vulnerability">
+                <Plus className="h-4 w-4 mr-1" /> Add Vulnerability
+              </Link>
             </Button>
           </div>
           
