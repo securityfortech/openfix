@@ -53,6 +53,7 @@ export type Database = {
       }
       vulnerabilities: {
         Row: {
+          asset_id: string | null
           created_at: string
           description: string | null
           detected: string
@@ -65,6 +66,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          asset_id?: string | null
           created_at?: string
           description?: string | null
           detected?: string
@@ -77,6 +79,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          asset_id?: string | null
           created_at?: string
           description?: string | null
           detected?: string
@@ -88,7 +91,15 @@ export type Database = {
           updated_at?: string
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "vulnerabilities_asset_id_fkey"
+            columns: ["asset_id"]
+            isOneToOne: false
+            referencedRelation: "assets"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
