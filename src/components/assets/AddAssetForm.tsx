@@ -48,7 +48,11 @@ export const AddAssetForm = () => {
       const { error } = await supabase
         .from('assets')
         .insert({
-          ...data,
+          name: data.name,
+          type: data.type,
+          environment: data.environment,
+          ip_address: data.ip_address || null,
+          endpoint: data.endpoint || null,
           status: 'secured', // Default status
           last_scan: new Date().toISOString()
         });
