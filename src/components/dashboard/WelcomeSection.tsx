@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Download } from "lucide-react";
+import { Download, Shield } from "lucide-react";
 
 interface WelcomeSectionProps {
   userName: string;
@@ -20,6 +20,7 @@ const WelcomeSection = ({ userName }: WelcomeSectionProps) => {
           Export Report
         </Button>
         <Button className="flex items-center gap-2">
+          <Shield className="h-4 w-4" />
           Start New Scan
         </Button>
       </div>

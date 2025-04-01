@@ -5,12 +5,31 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, Settings, Shield, Home, Database, Bot } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Link, useLocation } from "react-router-dom";
 
 const Sidebar = () => {
   const { user, logout } = useAuth();
+  const location = useLocation();
   
   // Get user's name from metadata or use email as fallback
   const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User';
+  
+  // Define navigation items
+  const mainNavItems = [
+    { path: "/dashboard", icon: Home, label: "Dashboard" },
+    { path: "/vulnerabilities", icon: Shield, label: "Vulnerabilities", badge: 12 },
+    { path: "/assets", icon: Database, label: "Assets" },
+    { path: "/assistant", icon: Bot, label: "Assistant" }
+  ];
+  
+  const settingsNavItems = [
+    { path: "/settings", icon: Settings, label: "Settings" }
+  ];
+  
+  // Determine if a nav item is active
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
   
   return (
     <div className="hidden md:flex w-64 flex-col fixed inset-y-0 bg-gray-900 text-white">
@@ -22,31 +41,39 @@ const Sidebar = () => {
       </div>
       <nav className="flex-1 pt-4 pb-4 overflow-y-auto">
         <div className="px-4 mb-2 text-sm font-medium text-gray-400">Main</div>
-        <a href="#" className="flex items-center px-4 py-2 text-white bg-gray-800">
-          <Home className="h-5 w-5 mr-3" />
-          Dashboard
-        </a>
-        <a href="#" className="flex items-center px-4 py-2 mt-1 text-gray-300 hover:bg-gray-800">
-          <Shield className="h-5 w-5 mr-3" />
-          Vulnerabilities
-          <Badge variant="outline" className="ml-auto bg-gray-800 text-gray-300">
-            12
-          </Badge>
-        </a>
-        <a href="#" className="flex items-center px-4 py-2 mt-1 text-gray-300 hover:bg-gray-800">
-          <Database className="h-5 w-5 mr-3" />
-          Assets
-        </a>
-        <a href="#" className="flex items-center px-4 py-2 mt-1 text-gray-300 hover:bg-gray-800">
-          <Bot className="h-5 w-5 mr-3" />
-          Assistant
-        </a>
+        
+        {mainNavItems.map((item) => (
+          <Link 
+            key={item.path}
+            to={item.path}
+            className={`flex items-center px-4 py-2 mt-1 text-gray-300 ${
+              isActive(item.path) ? "bg-gray-800 text-white" : "hover:bg-gray-800"
+            }`}
+          >
+            <item.icon className="h-5 w-5 mr-3" />
+            {item.label}
+            {item.badge && (
+              <Badge variant="outline" className="ml-auto bg-gray-800 text-gray-300">
+                {item.badge}
+              </Badge>
+            )}
+          </Link>
+        ))}
         
         <div className="px-4 mt-6 mb-2 text-sm font-medium text-gray-400">Settings</div>
-        <a href="#" className="flex items-center px-4 py-2 mt-1 text-gray-300 hover:bg-gray-800">
-          <Settings className="h-5 w-5 mr-3" />
-          Settings
-        </a>
+        
+        {settingsNavItems.map((item) => (
+          <Link 
+            key={item.path}
+            to={item.path}
+            className={`flex items-center px-4 py-2 mt-1 text-gray-300 ${
+              isActive(item.path) ? "bg-gray-800 text-white" : "hover:bg-gray-800"
+            }`}
+          >
+            <item.icon className="h-5 w-5 mr-3" />
+            {item.label}
+          </Link>
+        ))}
       </nav>
       <div className="p-4 border-t border-gray-800">
         <div className="flex items-center">

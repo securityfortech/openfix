@@ -10,6 +10,9 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
+import Vulnerabilities from "./pages/Vulnerabilities";
+import Assets from "./pages/Assets";
+import Assistant from "./pages/Assistant";
 import { useState } from "react";
 
 // Protected route component
@@ -36,6 +39,21 @@ const AppRoutes = () => {
       <Route path="/dashboard" element={
         <ProtectedRoute>
           <Dashboard />
+        </ProtectedRoute>
+      } />
+      <Route path="/vulnerabilities" element={
+        <ProtectedRoute>
+          <Vulnerabilities />
+        </ProtectedRoute>
+      } />
+      <Route path="/assets" element={
+        <ProtectedRoute>
+          <Assets />
+        </ProtectedRoute>
+      } />
+      <Route path="/assistant" element={
+        <ProtectedRoute>
+          <Assistant />
         </ProtectedRoute>
       } />
       <Route path="*" element={<NotFound />} />
