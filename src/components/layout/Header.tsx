@@ -25,13 +25,13 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { OrganizationSwitcher } from "@/components/organizations/OrganizationSwitcher";
 
 const Header = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { setTheme, theme } = useTheme();
   const isMobile = useIsMobile();
 
   const handleSignOut = async () => {
     try {
-      await user?.signOut(); // Call signOut from the user object
+      await logout();
     } catch (error) {
       console.error('Error signing out:', error);
     }
