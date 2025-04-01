@@ -28,25 +28,27 @@ const Assets = () => {
       {/* Main content */}
       <div className="flex-1 md:ml-64">
         <Header />
-        <main className="p-4 md:p-6 space-y-6">
-          <div className="flex justify-between items-center">
+        <main className="p-6 space-y-8 max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold mb-2">Assets</h2>
-              <p className="text-muted-foreground">Manage and monitor your application assets</p>
+              <h2 className="text-3xl font-bold tracking-tight">Assets</h2>
+              <p className="text-muted-foreground mt-1">Manage and monitor your application assets securely</p>
             </div>
             <AddAssetForm />
           </div>
           
           <AssetStats stats={stats} />
           
-          <AssetTabs
-            assets={assets}
-            loading={loading}
-            getFilteredAssets={getFilteredAssets}
-            formatLastScan={formatLastScan}
-            handleScanAsset={handleScanAsset}
-            handleFixIssues={handleFixIssues}
-          />
+          <div className="bg-card rounded-xl border shadow-sm">
+            <AssetTabs
+              assets={assets}
+              loading={loading}
+              getFilteredAssets={getFilteredAssets}
+              formatLastScan={formatLastScan}
+              handleScanAsset={handleScanAsset}
+              handleFixIssues={handleFixIssues}
+            />
+          </div>
         </main>
       </div>
     </div>
