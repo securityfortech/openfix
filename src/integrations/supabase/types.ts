@@ -9,6 +9,48 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      assets: {
+        Row: {
+          created_at: string
+          endpoint: string | null
+          environment: string
+          id: string
+          ip_address: string | null
+          last_scan: string
+          name: string
+          status: string
+          type: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          endpoint?: string | null
+          environment: string
+          id?: string
+          ip_address?: string | null
+          last_scan?: string
+          name: string
+          status?: string
+          type: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          endpoint?: string | null
+          environment?: string
+          id?: string
+          ip_address?: string | null
+          last_scan?: string
+          name?: string
+          status?: string
+          type?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       vulnerabilities: {
         Row: {
           created_at: string

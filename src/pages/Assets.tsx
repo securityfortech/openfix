@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import Sidebar from "@/components/layout/Sidebar";
@@ -9,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Database, Shield } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AddAssetForm } from "@/components/assets/AddAssetForm";
 
 const Assets = () => {
   const { user } = useAuth();
@@ -22,9 +22,12 @@ const Assets = () => {
       <div className="flex-1 md:ml-64">
         <Header />
         <main className="p-4 md:p-6 space-y-6">
-          <div>
-            <h2 className="text-2xl md:text-3xl font-bold mb-2">Assets</h2>
-            <p className="text-muted-foreground">Manage and monitor your application assets</p>
+          <div className="flex justify-between items-center">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold mb-2">Assets</h2>
+              <p className="text-muted-foreground">Manage and monitor your application assets</p>
+            </div>
+            <AddAssetForm />
           </div>
           
           <div className="grid gap-4 md:grid-cols-3">
