@@ -13,6 +13,7 @@ import Dashboard from "./pages/Dashboard";
 import Vulnerabilities from "./pages/Vulnerabilities";
 import Assets from "./pages/Assets";
 import Assistant from "./pages/Assistant";
+import Settings from "./pages/Settings";
 import { useState } from "react";
 
 // Protected route component
@@ -54,6 +55,11 @@ const AppRoutes = () => {
       <Route path="/assistant" element={
         <ProtectedRoute>
           <Assistant />
+        </ProtectedRoute>
+      } />
+      <Route path="/settings" element={
+        <ProtectedRoute>
+          <Settings />
         </ProtectedRoute>
       } />
       <Route path="*" element={<NotFound />} />
