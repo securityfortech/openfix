@@ -11,7 +11,7 @@ interface MetricCardProps {
   max?: number;
   valueClassName?: string;
   progressClassName?: string;
-  suffix?: string;
+  suffix?: React.ReactNode;
 }
 
 export const MetricCard = ({
