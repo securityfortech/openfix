@@ -22,7 +22,6 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { OrganizationSwitcher } from "@/components/organizations/OrganizationSwitcher";
 
 const Header = () => {
   const { user, logout } = useAuth();
@@ -45,7 +44,8 @@ const Header = () => {
       {isMobile && <div className="w-4"></div>}
 
       <div className="flex-1 flex items-center">
-        {!isMobile && <OrganizationSwitcher />}
+        {/* Logo or branding could go here */}
+        <h1 className="text-xl font-semibold hidden md:block">Security Dashboard</h1>
       </div>
 
       <div className="flex items-center gap-2">
