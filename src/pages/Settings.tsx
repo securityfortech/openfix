@@ -17,18 +17,18 @@ const Settings = () => {
       <Sidebar />
       <div className="md:pl-64">
         <Header />
-        <main className="container mx-auto px-4 py-6">
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold">Account Settings</h1>
-            <p className="text-muted-foreground">Manage your account settings and preferences</p>
+        <main className="container mx-auto px-4 py-8">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900">Account Settings</h1>
+            <p className="text-muted-foreground mt-2 text-base leading-relaxed">Manage your account settings and preferences</p>
           </div>
           
-          <div className="bg-white shadow rounded-lg p-6">
+          <div className="bg-white shadow-sm rounded-lg p-6 border border-gray-100">
             <Tabs defaultValue="user" className="w-full">
-              <TabsList className="mb-6">
-                <TabsTrigger value="user">User Profile</TabsTrigger>
-                <TabsTrigger value="notifications">Notifications</TabsTrigger>
-                <TabsTrigger value="security">Security</TabsTrigger>
+              <TabsList className="mb-8 bg-gray-100/80 p-1.5">
+                <TabsTrigger value="user" className="text-sm font-medium px-4">User Profile</TabsTrigger>
+                <TabsTrigger value="notifications" className="text-sm font-medium px-4">Notifications</TabsTrigger>
+                <TabsTrigger value="security" className="text-sm font-medium px-4">Security</TabsTrigger>
               </TabsList>
               
               <TabsContent value="user">

@@ -20,17 +20,19 @@ export function NotificationSettings() {
   };
   
   return (
-    <div className="space-y-6">
-      <h3 className="text-lg font-medium">Notification Preferences</h3>
-      <p className="text-sm text-muted-foreground">
-        Configure how you receive notifications from OpenFix.
-      </p>
+    <div className="space-y-8">
+      <div>
+        <h3 className="text-xl font-semibold tracking-tight text-gray-900">Notification Preferences</h3>
+        <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
+          Configure how you receive notifications from OpenFix.
+        </p>
+      </div>
       
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="space-y-0.5">
-            <Label htmlFor="email-notifications">Email Notifications</Label>
-            <p className="text-sm text-muted-foreground">
+      <div className="space-y-6">
+        <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+          <div className="space-y-1">
+            <Label htmlFor="email-notifications" className="font-medium text-gray-900">Email Notifications</Label>
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Receive vulnerability and security alerts via email.
             </p>
           </div>
@@ -41,10 +43,10 @@ export function NotificationSettings() {
           />
         </div>
         
-        <div className="flex items-center justify-between">
-          <div className="space-y-0.5">
-            <Label htmlFor="push-notifications">Push Notifications</Label>
-            <p className="text-sm text-muted-foreground">
+        <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+          <div className="space-y-1">
+            <Label htmlFor="push-notifications" className="font-medium text-gray-900">Push Notifications</Label>
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Receive notifications directly in your browser.
             </p>
           </div>
@@ -55,10 +57,10 @@ export function NotificationSettings() {
           />
         </div>
         
-        <div className="flex items-center justify-between">
-          <div className="space-y-0.5">
-            <Label htmlFor="security-alerts">Security Alerts</Label>
-            <p className="text-sm text-muted-foreground">
+        <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+          <div className="space-y-1">
+            <Label htmlFor="security-alerts" className="font-medium text-gray-900">Security Alerts</Label>
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Get notified immediately about critical security issues.
             </p>
           </div>
@@ -69,10 +71,10 @@ export function NotificationSettings() {
           />
         </div>
         
-        <div className="flex items-center justify-between">
-          <div className="space-y-0.5">
-            <Label htmlFor="weekly-digest">Weekly Digest</Label>
-            <p className="text-sm text-muted-foreground">
+        <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+          <div className="space-y-1">
+            <Label htmlFor="weekly-digest" className="font-medium text-gray-900">Weekly Digest</Label>
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Receive a weekly summary of security updates.
             </p>
           </div>
@@ -84,7 +86,7 @@ export function NotificationSettings() {
         </div>
       </div>
       
-      <Button onClick={handleSave}>Save notification settings</Button>
+      <Button onClick={handleSave} className="mt-4">Save notification settings</Button>
     </div>
   );
 }

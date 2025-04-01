@@ -78,26 +78,26 @@ export function SecuritySettings() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
-        <h3 className="text-lg font-medium">Security Settings</h3>
-        <p className="text-sm text-muted-foreground">
+        <h3 className="text-xl font-semibold tracking-tight text-gray-900">Security Settings</h3>
+        <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
           Manage your account security preferences.
         </p>
       </div>
       
-      <div className="space-y-4">
-        <h4 className="text-base font-medium">Change Password</h4>
+      <div className="space-y-6 bg-gray-50 p-6 rounded-lg">
+        <h4 className="text-lg font-medium text-gray-900">Change Password</h4>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
             <FormField
               control={form.control}
               name="currentPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Current Password</FormLabel>
+                  <FormLabel className="text-base font-medium">Current Password</FormLabel>
                   <FormControl>
-                    <Input type="password" {...field} />
+                    <Input type="password" {...field} className="focus:border-primary" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -109,11 +109,11 @@ export function SecuritySettings() {
               name="newPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>New Password</FormLabel>
+                  <FormLabel className="text-base font-medium">New Password</FormLabel>
                   <FormControl>
-                    <Input type="password" {...field} />
+                    <Input type="password" {...field} className="focus:border-primary" />
                   </FormControl>
-                  <FormDescription>
+                  <FormDescription className="text-sm text-muted-foreground">
                     Password must be at least 6 characters.
                   </FormDescription>
                   <FormMessage />
@@ -126,31 +126,31 @@ export function SecuritySettings() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirm New Password</FormLabel>
+                  <FormLabel className="text-base font-medium">Confirm New Password</FormLabel>
                   <FormControl>
-                    <Input type="password" {...field} />
+                    <Input type="password" {...field} className="focus:border-primary" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             
-            <Button type="submit">Update password</Button>
+            <Button type="submit" className="mt-2">Update password</Button>
           </form>
         </Form>
       </div>
       
-      <div className="pt-4 border-t">
-        <h4 className="text-base font-medium mb-2">Two-Factor Authentication</h4>
-        <p className="text-sm text-muted-foreground mb-4">
+      <div className="pt-6 border-t">
+        <h4 className="text-lg font-medium text-gray-900 mb-3">Two-Factor Authentication</h4>
+        <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
           Add an extra layer of security to your account.
         </p>
         <Button variant="outline">Enable 2FA</Button>
       </div>
       
-      <div className="pt-4 border-t">
-        <h4 className="text-base font-medium text-destructive mb-2">Danger Zone</h4>
-        <p className="text-sm text-muted-foreground mb-4">
+      <div className="pt-6 border-t">
+        <h4 className="text-lg font-medium text-destructive mb-3">Danger Zone</h4>
+        <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
           Permanently delete your account and all your data.
         </p>
         <Button variant="destructive">Delete Account</Button>

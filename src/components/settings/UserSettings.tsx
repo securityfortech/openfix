@@ -68,33 +68,33 @@ export function UserSettings({ userName, email }: UserSettingsProps) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex items-center gap-6">
-        <Avatar className="h-20 w-20">
+        <Avatar className="h-20 w-20 border-2 border-primary/10">
           <AvatarImage src="/placeholder.svg" alt={userName} />
-          <AvatarFallback>{userName.charAt(0).toUpperCase()}</AvatarFallback>
+          <AvatarFallback className="text-lg font-medium">{userName.charAt(0).toUpperCase()}</AvatarFallback>
         </Avatar>
         <div>
-          <h3 className="text-lg font-medium">{userName}</h3>
-          <p className="text-sm text-muted-foreground">{email}</p>
-          <Button variant="outline" size="sm" className="mt-2">
+          <h3 className="text-xl font-semibold tracking-tight text-gray-900">{userName}</h3>
+          <p className="text-sm text-muted-foreground mt-1">{email}</p>
+          <Button variant="outline" size="sm" className="mt-3 text-xs">
             Change Avatar
           </Button>
         </div>
       </div>
       
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel className="text-base font-medium">Name</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} className="focus:border-primary" />
                 </FormControl>
-                <FormDescription>
+                <FormDescription className="text-sm text-muted-foreground">
                   This is your public display name.
                 </FormDescription>
                 <FormMessage />
@@ -107,11 +107,11 @@ export function UserSettings({ userName, email }: UserSettingsProps) {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel className="text-base font-medium">Email</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} className="focus:border-primary" />
                 </FormControl>
-                <FormDescription>
+                <FormDescription className="text-sm text-muted-foreground">
                   Your email address is used for notifications and login.
                 </FormDescription>
                 <FormMessage />
@@ -119,7 +119,7 @@ export function UserSettings({ userName, email }: UserSettingsProps) {
             )}
           />
           
-          <Button type="submit">Update profile</Button>
+          <Button type="submit" className="mt-2">Update profile</Button>
         </form>
       </Form>
     </div>
