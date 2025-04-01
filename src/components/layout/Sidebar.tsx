@@ -1,23 +1,67 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, Settings, Shield, Home, Database, Bot } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link, useLocation } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 const Sidebar = () => {
   const { user, logout } = useAuth();
   const location = useLocation();
+  const [vulnerabilityCount, setVulnerabilityCount] = useState<number | null>(null);
   
   // Get user's name from metadata or use email as fallback
   const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User';
   
+  // Fetch vulnerability count
+  useEffect(() => {
+    const fetchVulnerabilityCount = async () => {
+      try {
+        const { count, error } = await supabase
+          .from('vulnerabilities')
+          .select('*', { count: 'exact', head: true });
+        
+        if (error) {
+          console.error('Error fetching vulnerability count:', error);
+          return;
+        }
+        
+        setVulnerabilityCount(count);
+      } catch (error) {
+        console.error('Error fetching vulnerability count:', error);
+      }
+    };
+
+    fetchVulnerabilityCount();
+
+    // Set up realtime subscription for vulnerability changes
+    const channel = supabase
+      .channel('sidebar-vulnerability-count')
+      .on('postgres_changes', 
+        { 
+          event: '*', 
+          schema: 'public', 
+          table: 'vulnerabilities' 
+        }, 
+        () => {
+          // When any change occurs, refresh the count
+          fetchVulnerabilityCount();
+        }
+      )
+      .subscribe();
+    
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+  
   // Define navigation items
   const mainNavItems = [
     { path: "/dashboard", icon: Home, label: "Dashboard" },
-    { path: "/vulnerabilities", icon: Shield, label: "Vulnerabilities", badge: 12 },
+    { path: "/vulnerabilities", icon: Shield, label: "Vulnerabilities", badge: vulnerabilityCount },
     { path: "/assets", icon: Database, label: "Assets" },
     { path: "/assistant", icon: Bot, label: "Assistant" }
   ];
@@ -50,9 +94,9 @@ const Sidebar = () => {
           >
             <item.icon className="h-5 w-5 mr-3" />
             {item.label}
-            {item.badge && (
+            {item.badge !== undefined && (
               <Badge variant="outline" className="ml-auto bg-gray-800 text-gray-300">
-                {item.badge}
+                {item.badge !== null ? item.badge : '...'}
               </Badge>
             )}
           </Link>
