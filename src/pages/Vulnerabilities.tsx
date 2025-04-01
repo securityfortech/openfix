@@ -4,7 +4,9 @@ import { useAuth } from "@/contexts/AuthContext";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 import { VulnerabilityList } from "@/components/dashboard/VulnerabilityList";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { Link } from "react-router-dom";
 import {
   Pagination,
   PaginationContent,
@@ -14,7 +16,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const Vulnerabilities = () => {
   const { user } = useAuth();
@@ -31,9 +32,14 @@ const Vulnerabilities = () => {
       <div className="flex-1 md:ml-64">
         <Header />
         <main className="p-4 md:p-6 space-y-6">
-          <div>
-            <h2 className="text-2xl md:text-3xl font-bold mb-2">Vulnerabilities</h2>
-            <p className="text-muted-foreground">Monitor and manage security vulnerabilities</p>
+          <div className="flex justify-between items-center">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold mb-2">Vulnerabilities</h2>
+              <p className="text-muted-foreground">Monitor and manage security vulnerabilities</p>
+            </div>
+            <Button as={Link} to="/add-vulnerability">
+              <Plus className="h-4 w-4 mr-1" /> Add Vulnerability
+            </Button>
           </div>
           
           <div className="grid gap-6">

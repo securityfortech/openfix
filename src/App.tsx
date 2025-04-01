@@ -11,6 +11,7 @@ import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
 import Vulnerabilities from "./pages/Vulnerabilities";
+import AddVulnerability from "./pages/AddVulnerability";
 import Assets from "./pages/Assets";
 import Assistant from "./pages/Assistant";
 import Settings from "./pages/Settings";
@@ -45,6 +46,11 @@ const AppRoutes = () => {
       <Route path="/vulnerabilities" element={
         <ProtectedRoute>
           <Vulnerabilities />
+        </ProtectedRoute>
+      } />
+      <Route path="/add-vulnerability" element={
+        <ProtectedRoute>
+          <AddVulnerability />
         </ProtectedRoute>
       } />
       <Route path="/assets" element={
