@@ -122,12 +122,18 @@ const Sidebar = () => {
             <AvatarImage src="/placeholder.svg" />
             <AvatarFallback>{userName.charAt(0)}</AvatarFallback>
           </Avatar>
-          <div className="ml-3">
-            <p className="text-sm font-medium">{userName}</p>
-            <p className="text-xs text-gray-500">{user?.email}</p>
+          <div className="ml-3 flex-1 min-w-0">
+            <p className="text-sm font-medium truncate">{userName}</p>
+            <p className="text-xs text-gray-500 truncate">{user?.email}</p>
           </div>
-          <Button variant="ghost" size="icon" className="ml-auto" onClick={logout}>
-            <LogOut className="h-5 w-5 text-gray-400" />
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="ml-2 text-gray-400 hover:text-white" 
+            onClick={logout}
+            title="Logout"
+          >
+            <LogOut className="h-5 w-5" />
           </Button>
         </div>
       </div>
