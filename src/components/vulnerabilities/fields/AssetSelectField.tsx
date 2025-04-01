@@ -16,9 +16,9 @@ const AssetSelectField: React.FC<AssetSelectFieldProps> = ({
   isLoadingAssets,
 }) => {
   const assetOptions: SelectOption[] = [
-    { value: "", label: "None" },
+    { value: "none", label: "None" },
     ...(isLoadingAssets 
-      ? [{ value: "", label: "Loading assets...", disabled: true }]
+      ? [{ value: "loading", label: "Loading assets...", disabled: true }]
       : assets.map((asset) => ({
           value: asset.id,
           label: `${asset.name} (${asset.type})`,
