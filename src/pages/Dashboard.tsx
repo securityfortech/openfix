@@ -5,7 +5,7 @@ import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 import WelcomeSection from "@/components/dashboard/WelcomeSection";
 import MetricsCards from "@/components/dashboard/MetricsCards";
-import VulnerabilityList from "@/components/dashboard/VulnerabilityList";
+import { VulnerabilityList } from "@/components/dashboard/VulnerabilityList";
 
 const Dashboard = () => {
   const { user } = useAuth();
