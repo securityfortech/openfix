@@ -16,13 +16,15 @@ const Teams = () => {
       {/* Main content */}
       <div className="flex-1 md:ml-64">
         <Header />
-        <main className="p-4 md:p-6 space-y-6">
+        <main className="p-6 space-y-8 max-w-7xl mx-auto">
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold mb-2">Teams</h2>
-            <p className="text-muted-foreground">Manage contributors who can be assigned to vulnerabilities</p>
+            <h2 className="text-3xl font-bold tracking-tight">Teams</h2>
+            <p className="text-muted-foreground mt-1">Manage contributors who can be assigned to vulnerabilities</p>
           </div>
           
-          <TeamsComponent />
+          <div className="bg-card rounded-xl border shadow-sm">
+            <TeamsComponent />
+          </div>
         </main>
       </div>
     </div>

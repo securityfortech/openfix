@@ -28,23 +28,25 @@ const Vulnerabilities = () => {
       {/* Main content */}
       <div className="flex-1 md:ml-64">
         <Header />
-        <main className="p-4 md:p-6 space-y-6">
-          <div className="flex justify-between items-center">
+        <main className="p-6 space-y-8 max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold mb-2">Vulnerabilities</h2>
-              <p className="text-muted-foreground">Monitor and manage security vulnerabilities</p>
+              <h2 className="text-3xl font-bold tracking-tight">Vulnerabilities</h2>
+              <p className="text-muted-foreground mt-1">Monitor and manage security vulnerabilities</p>
             </div>
             <AddVulnerabilityForm onSuccess={refetchVulnerabilities} />
           </div>
           
           <VulnerabilityStats stats={stats} />
           
-          <VulnerabilityTabs
-            vulnerabilities={vulnerabilities}
-            loading={loading}
-            getFilteredVulnerabilities={getFilteredVulnerabilities}
-            formatTimeAgo={formatTimeAgo}
-          />
+          <div className="bg-card rounded-xl border shadow-sm">
+            <VulnerabilityTabs
+              vulnerabilities={vulnerabilities}
+              loading={loading}
+              getFilteredVulnerabilities={getFilteredVulnerabilities}
+              formatTimeAgo={formatTimeAgo}
+            />
+          </div>
         </main>
       </div>
     </div>

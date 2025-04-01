@@ -13,22 +13,22 @@ const Settings = () => {
   const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User';
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="flex h-screen bg-background">
       <Sidebar />
-      <div className="md:pl-64">
+      <div className="flex-1 md:ml-64">
         <Header />
-        <main className="container mx-auto px-4 py-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">Account Settings</h1>
-            <p className="text-muted-foreground mt-2 text-base leading-relaxed">Manage your account settings and preferences</p>
+        <main className="p-6 space-y-8 max-w-7xl mx-auto">
+          <div>
+            <h2 className="text-3xl font-bold tracking-tight">Account Settings</h2>
+            <p className="text-muted-foreground mt-1">Manage your account settings and preferences</p>
           </div>
           
-          <div className="bg-white shadow-sm rounded-lg p-6 border border-gray-100">
+          <div className="bg-card rounded-xl border shadow-sm p-6">
             <Tabs defaultValue="user" className="w-full">
-              <TabsList className="mb-8 bg-gray-100/80 p-1.5">
-                <TabsTrigger value="user" className="text-sm font-medium px-4">User Profile</TabsTrigger>
-                <TabsTrigger value="notifications" className="text-sm font-medium px-4">Notifications</TabsTrigger>
-                <TabsTrigger value="security" className="text-sm font-medium px-4">Security</TabsTrigger>
+              <TabsList className="mb-8">
+                <TabsTrigger value="user">User Profile</TabsTrigger>
+                <TabsTrigger value="notifications">Notifications</TabsTrigger>
+                <TabsTrigger value="security">Security</TabsTrigger>
               </TabsList>
               
               <TabsContent value="user">
