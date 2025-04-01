@@ -3,12 +3,16 @@ import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { formatDistanceToNow } from "date-fns";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function useVulnerabilities() {
+  const { user } = useAuth();
   const [vulnerabilities, setVulnerabilities] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchVulnerabilities = useCallback(async () => {
+    if (!user) return;
+    
     try {
       setLoading(true);
       const { data, error } = await supabase
@@ -18,6 +22,7 @@ export function useVulnerabilities() {
           assets (*),
           team_members (*)
         `)
+        .eq('user_id', user.id)
         .order('created_at', { ascending: false });
       
       if (error) {
@@ -35,11 +40,13 @@ export function useVulnerabilities() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
-    fetchVulnerabilities();
-  }, [fetchVulnerabilities]);
+    if (user) {
+      fetchVulnerabilities();
+    }
+  }, [fetchVulnerabilities, user]);
 
   // Updated to filter by severity instead of status
   const getFilteredVulnerabilities = (filter) => {

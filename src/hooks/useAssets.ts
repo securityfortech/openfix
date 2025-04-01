@@ -3,9 +3,11 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Asset, AssetStats } from "@/types/asset";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function useAssets() {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [assets, setAssets] = useState<Asset[]>([]);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<AssetStats>({
@@ -16,11 +18,14 @@ export function useAssets() {
 
   // Fetch assets from the database
   const fetchAssets = async () => {
+    if (!user) return;
+    
     setLoading(true);
     try {
       const { data, error } = await supabase
         .from('assets')
-        .select('*');
+        .select('*')
+        .eq('user_id', user.id);
 
       if (error) throw error;
 
@@ -61,7 +66,8 @@ export function useAssets() {
       const { error } = await supabase
         .from('assets')
         .update({ last_scan: new Date().toISOString() })
-        .eq('id', id);
+        .eq('id', id)
+        .eq('user_id', user?.id);
 
       if (error) throw error;
       
@@ -95,7 +101,8 @@ export function useAssets() {
           status: 'secured',
           last_scan: new Date().toISOString() 
         })
-        .eq('id', id);
+        .eq('id', id)
+        .eq('user_id', user?.id);
 
       if (error) throw error;
       
@@ -136,27 +143,30 @@ export function useAssets() {
 
   // Set up realtime subscription and fetch initial data
   useEffect(() => {
-    fetchAssets();
+    if (user) {
+      fetchAssets();
 
-    const channel = supabase
-      .channel('assets-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'assets'
-        },
-        () => {
-          fetchAssets();
-        }
-      )
-      .subscribe();
+      const channel = supabase
+        .channel('assets-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'assets',
+            filter: `user_id=eq.${user.id}`
+          },
+          () => {
+            fetchAssets();
+          }
+        )
+        .subscribe();
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    }
+  }, [user]);
 
   return {
     assets,
