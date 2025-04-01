@@ -15,12 +15,13 @@ export function useVulnerabilities() {
     
     try {
       setLoading(true);
+      // Explicitly define what fields to select from each table to avoid deep type instantiation
       const { data, error } = await supabase
         .from('vulnerabilities')
         .select(`
-          *,
-          assets (*),
-          team_members (*)
+          id, name, description, severity, status, location, created_at, updated_at, detected,
+          assets (id, name, type, environment, status, last_scan, ip_address, endpoint),
+          team_members (id, name, email, avatar_url, role)
         `)
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
