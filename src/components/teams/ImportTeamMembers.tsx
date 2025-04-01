@@ -1,9 +1,8 @@
-
 import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Github, GitlabFilled } from "lucide-react";
+import { Github, GitlabIcon } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -132,7 +131,7 @@ export const ImportTeamMembers: React.FC<ImportTeamMembersProps> = ({ onImportSu
             GitHub
           </TabsTrigger>
           <TabsTrigger value="gitlab">
-            <GitlabFilled className="mr-2 h-4 w-4" />
+            <GitlabIcon className="mr-2 h-4 w-4" />
             GitLab
           </TabsTrigger>
         </TabsList>

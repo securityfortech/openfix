@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
@@ -7,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Trash2, UserPlus } from "lucide-react";
 import { EmptyState } from "@/components/teams/EmptyState";
-import { Database } from "@/integrations/supabase/types";
 import { AddTeamMemberDialog } from "./AddTeamMemberDialog";
 
 type TeamMember = {
@@ -113,7 +111,7 @@ export const TeamMembers: React.FC<TeamMembersProps> = ({ refreshTrigger }) => {
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
         </div>
       ) : members.length === 0 ? (
-        <EmptyState />
+        <EmptyState onAddClick={() => setShowAddDialog(true)} />
       ) : (
         <Table>
           <TableHeader>
