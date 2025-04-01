@@ -1,9 +1,10 @@
+
 import React from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Bell, LogOut, Settings, AlertTriangle, CheckCircle, Clock, Shield, Home, Database, Bot } from "lucide-react";
+import { Bell, LogOut, Settings, AlertTriangle, CheckCircle, Clock, Shield, Home, Database, Bot, Download } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
