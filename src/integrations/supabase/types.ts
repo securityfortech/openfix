@@ -153,6 +153,7 @@ export type Database = {
       vulnerabilities: {
         Row: {
           asset_id: string | null
+          assignee_id: string | null
           created_at: string
           description: string | null
           detected: string
@@ -167,6 +168,7 @@ export type Database = {
         }
         Insert: {
           asset_id?: string | null
+          assignee_id?: string | null
           created_at?: string
           description?: string | null
           detected?: string
@@ -181,6 +183,7 @@ export type Database = {
         }
         Update: {
           asset_id?: string | null
+          assignee_id?: string | null
           created_at?: string
           description?: string | null
           detected?: string
@@ -199,6 +202,13 @@ export type Database = {
             columns: ["asset_id"]
             isOneToOne: false
             referencedRelation: "assets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vulnerabilities_assignee_id_fkey"
+            columns: ["assignee_id"]
+            isOneToOne: false
+            referencedRelation: "team_members"
             referencedColumns: ["id"]
           },
           {
