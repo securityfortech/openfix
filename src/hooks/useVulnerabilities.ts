@@ -49,12 +49,15 @@ export function useVulnerabilities() {
     fetchVulnerabilities();
   }, [fetchVulnerabilities]);
 
-  const getFilteredVulnerabilities = (status) => {
-    if (status === 'all') {
+  // Updated to filter by severity instead of status
+  const getFilteredVulnerabilities = (filter) => {
+    if (filter === 'all') {
       return vulnerabilities;
     }
     
-    return vulnerabilities.filter((vulnerability) => vulnerability.status === status);
+    return vulnerabilities.filter((vulnerability) => 
+      vulnerability.severity.toLowerCase() === filter.toLowerCase()
+    );
   };
 
   const formatTimeAgo = (timestamp) => {
