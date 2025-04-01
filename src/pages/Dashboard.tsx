@@ -2,9 +2,20 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LogOut, Shield, AlertTriangle, CheckCircle, LayoutDashboard, Bug, Server, Bot, Settings as SettingsIcon } from "lucide-react";
 import { useState } from "react";
+import {
+  SidebarProvider,
+  Sidebar,
+  SidebarContent,
+  SidebarHeader,
+  SidebarFooter,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarGroup,
+  SidebarGroupContent
+} from "@/components/ui/sidebar";
 
 // Define interfaces for our data types
 interface Vulnerability {
@@ -24,7 +35,7 @@ interface Asset {
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const [activeView, setActiveView] = useState("dashboard");
 
   // Mock vulnerability data
   const vulnerabilities: Vulnerability[] = [
@@ -77,57 +88,21 @@ const Dashboard = () => {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">O</span>
-            </div>
-            <h1 className="text-xl font-bold">OpenFix</h1>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="text-sm">
-              {user?.fullName || user?.email}
-            </div>
-            <Button variant="outline" size="sm" onClick={logout}>
-              <LogOut className="h-4 w-4 mr-2" />
-              Logout
-            </Button>
-          </div>
-        </div>
-      </header>
+  // Menu items for the sidebar
+  const menuItems = [
+    { title: "Dashboard", icon: LayoutDashboard, view: "dashboard" },
+    { title: "Vulnerabilities", icon: Bug, view: "vulnerabilities" },
+    { title: "Assets", icon: Server, view: "assets" },
+    { title: "Assistants", icon: Bot, view: "assistants" },
+    { title: "Settings", icon: SettingsIcon, view: "settings" }
+  ];
 
-      <main className="container mx-auto px-4 py-8">
-        <h2 className="text-2xl font-bold mb-6">Vulnerability Management</h2>
-        
-        <Tabs defaultValue="dashboard" className="w-full">
-          <TabsList className="w-full justify-start mb-8">
-            <TabsTrigger value="dashboard" onClick={() => setActiveTab("dashboard")}>
-              <LayoutDashboard className="h-4 w-4 mr-2" />
-              Dashboard
-            </TabsTrigger>
-            <TabsTrigger value="vulnerabilities" onClick={() => setActiveTab("vulnerabilities")}>
-              <Bug className="h-4 w-4 mr-2" />
-              Vulnerabilities
-            </TabsTrigger>
-            <TabsTrigger value="assets" onClick={() => setActiveTab("assets")}>
-              <Server className="h-4 w-4 mr-2" />
-              Assets
-            </TabsTrigger>
-            <TabsTrigger value="assistants" onClick={() => setActiveTab("assistants")}>
-              <Bot className="h-4 w-4 mr-2" />
-              Assistants
-            </TabsTrigger>
-            <TabsTrigger value="settings" onClick={() => setActiveTab("settings")}>
-              <SettingsIcon className="h-4 w-4 mr-2" />
-              Settings
-            </TabsTrigger>
-          </TabsList>
-
-          {/* Dashboard Tab Content */}
-          <TabsContent value="dashboard" className="space-y-6">
+  // Render content based on active view
+  const renderContent = () => {
+    switch (activeView) {
+      case "dashboard":
+        return (
+          <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
               <Card>
                 <CardHeader className="pb-2">
@@ -186,207 +161,266 @@ const Dashboard = () => {
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
+          </div>
+        );
 
-          {/* Vulnerabilities Tab Content */}
-          <TabsContent value="vulnerabilities" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>All Vulnerabilities</CardTitle>
-                <CardDescription>Manage and track all security issues</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="mb-4 flex justify-between items-center">
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm">Filter</Button>
-                    <Button variant="outline" size="sm">Search</Button>
-                  </div>
-                  <Button size="sm">Add New</Button>
+      case "vulnerabilities":
+        return (
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle>All Vulnerabilities</CardTitle>
+              <CardDescription>Manage and track all security issues</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="mb-4 flex justify-between items-center">
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm">Filter</Button>
+                  <Button variant="outline" size="sm">Search</Button>
                 </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b bg-muted/50">
-                        <th className="text-left p-3 font-medium">Title</th>
-                        <th className="text-left p-3 font-medium">Severity</th>
-                        <th className="text-left p-3 font-medium">Status</th>
-                        <th className="text-left p-3 font-medium">Assigned To</th>
-                        <th className="text-left p-3 font-medium">Actions</th>
+                <Button size="sm">Add New</Button>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b bg-muted/50">
+                      <th className="text-left p-3 font-medium">Title</th>
+                      <th className="text-left p-3 font-medium">Severity</th>
+                      <th className="text-left p-3 font-medium">Status</th>
+                      <th className="text-left p-3 font-medium">Assigned To</th>
+                      <th className="text-left p-3 font-medium">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {vulnerabilities.map((vuln) => (
+                      <tr key={vuln.id} className="border-b last:border-b-0 hover:bg-muted/50">
+                        <td className="p-3">{vuln.title}</td>
+                        <td className="p-3">
+                          <span className={getSeverityColor(vuln.severity)}>
+                            {vuln.severity}
+                          </span>
+                        </td>
+                        <td className="p-3">
+                          <div className="flex items-center gap-1">
+                            {getStatusIcon(vuln.status)}
+                            <span>{vuln.status}</span>
+                          </div>
+                        </td>
+                        <td className="p-3">{vuln.assignedTo || "Unassigned"}</td>
+                        <td className="p-3">
+                          <div className="flex gap-2">
+                            <Button variant="ghost" size="sm">Edit</Button>
+                            <Button variant="ghost" size="sm" className="text-red-500">Delete</Button>
+                          </div>
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {vulnerabilities.map((vuln) => (
-                        <tr key={vuln.id} className="border-b last:border-b-0 hover:bg-muted/50">
-                          <td className="p-3">{vuln.title}</td>
-                          <td className="p-3">
-                            <span className={getSeverityColor(vuln.severity)}>
-                              {vuln.severity}
-                            </span>
-                          </td>
-                          <td className="p-3">
-                            <div className="flex items-center gap-1">
-                              {getStatusIcon(vuln.status)}
-                              <span>{vuln.status}</span>
-                            </div>
-                          </td>
-                          <td className="p-3">{vuln.assignedTo || "Unassigned"}</td>
-                          <td className="p-3">
-                            <div className="flex gap-2">
-                              <Button variant="ghost" size="sm">Edit</Button>
-                              <Button variant="ghost" size="sm" className="text-red-500">Delete</Button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
+        );
 
-          {/* Assets Tab Content */}
-          <TabsContent value="assets" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Asset Management</CardTitle>
-                <CardDescription>Manage your organization's digital assets</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="mb-4 flex justify-between items-center">
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm">Filter</Button>
-                    <Button variant="outline" size="sm">Search</Button>
-                  </div>
-                  <Button size="sm">Add Asset</Button>
+      case "assets":
+        return (
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle>Asset Management</CardTitle>
+              <CardDescription>Manage your organization's digital assets</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="mb-4 flex justify-between items-center">
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm">Filter</Button>
+                  <Button variant="outline" size="sm">Search</Button>
                 </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b bg-muted/50">
-                        <th className="text-left p-3 font-medium">Name</th>
-                        <th className="text-left p-3 font-medium">Type</th>
-                        <th className="text-left p-3 font-medium">Status</th>
-                        <th className="text-left p-3 font-medium">Actions</th>
+                <Button size="sm">Add Asset</Button>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b bg-muted/50">
+                      <th className="text-left p-3 font-medium">Name</th>
+                      <th className="text-left p-3 font-medium">Type</th>
+                      <th className="text-left p-3 font-medium">Status</th>
+                      <th className="text-left p-3 font-medium">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {assets.map((asset) => (
+                      <tr key={asset.id} className="border-b last:border-b-0 hover:bg-muted/50">
+                        <td className="p-3">{asset.name}</td>
+                        <td className="p-3">{asset.type}</td>
+                        <td className="p-3">
+                          <span className={getAssetStatusColor(asset.status)}>
+                            {asset.status}
+                          </span>
+                        </td>
+                        <td className="p-3">
+                          <div className="flex gap-2">
+                            <Button variant="ghost" size="sm">View</Button>
+                            <Button variant="ghost" size="sm">Edit</Button>
+                          </div>
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {assets.map((asset) => (
-                        <tr key={asset.id} className="border-b last:border-b-0 hover:bg-muted/50">
-                          <td className="p-3">{asset.name}</td>
-                          <td className="p-3">{asset.type}</td>
-                          <td className="p-3">
-                            <span className={getAssetStatusColor(asset.status)}>
-                              {asset.status}
-                            </span>
-                          </td>
-                          <td className="p-3">
-                            <div className="flex gap-2">
-                              <Button variant="ghost" size="sm">View</Button>
-                              <Button variant="ghost" size="sm">Edit</Button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
+        );
 
-          {/* Assistants Tab Content */}
-          <TabsContent value="assistants" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>AI Security Assistant</CardTitle>
-                <CardDescription>Get AI-powered recommendations for your security issues</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-col space-y-4">
-                  <div className="bg-muted p-4 rounded-lg h-64 overflow-y-auto">
-                    <div className="space-y-4">
-                      <div className="flex items-start">
-                        <div className="bg-primary/10 p-3 rounded-lg max-w-[80%]">
-                          <p className="text-sm">Hello! I'm your AI security assistant. I can help analyze vulnerabilities and provide recommendations. What would you like to know?</p>
-                        </div>
+      case "assistants":
+        return (
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle>AI Security Assistant</CardTitle>
+              <CardDescription>Get AI-powered recommendations for your security issues</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col space-y-4">
+                <div className="bg-muted p-4 rounded-lg h-64 overflow-y-auto">
+                  <div className="space-y-4">
+                    <div className="flex items-start">
+                      <div className="bg-primary/10 p-3 rounded-lg max-w-[80%]">
+                        <p className="text-sm">Hello! I'm your AI security assistant. I can help analyze vulnerabilities and provide recommendations. What would you like to know?</p>
                       </div>
-                      {/* You can add more message bubbles here */}
                     </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <input 
-                      type="text" 
-                      placeholder="Ask a security question..." 
-                      className="flex-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
-                    <Button>Send</Button>
+                    {/* You can add more message bubbles here */}
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+                <div className="flex gap-2">
+                  <input 
+                    type="text" 
+                    placeholder="Ask a security question..." 
+                    className="flex-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                  <Button>Send</Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        );
 
-          {/* Settings Tab Content */}
-          <TabsContent value="settings" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>User Settings</CardTitle>
-                <CardDescription>Manage your profile and preferences</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-medium mb-2">Profile Information</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium mb-1">Full Name</label>
-                        <input 
-                          type="text" 
-                          value={user?.fullName || ""} 
-                          className="w-full p-2 border rounded-md"
-                          placeholder="Your full name"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium mb-1">Email</label>
-                        <input 
-                          type="email" 
-                          value={user?.email} 
-                          className="w-full p-2 border rounded-md" 
-                          disabled
-                        />
-                      </div>
+      case "settings":
+        return (
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle>User Settings</CardTitle>
+              <CardDescription>Manage your profile and preferences</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-medium mb-2">Profile Information</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Full Name</label>
+                      <input 
+                        type="text" 
+                        value={user?.fullName || ""} 
+                        className="w-full p-2 border rounded-md"
+                        placeholder="Your full name"
+                      />
                     </div>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-medium mb-2">Notification Preferences</h3>
-                    <div className="space-y-2">
-                      <div className="flex items-center">
-                        <input type="checkbox" id="email-notifications" className="mr-2" />
-                        <label htmlFor="email-notifications">Email notifications for new vulnerabilities</label>
-                      </div>
-                      <div className="flex items-center">
-                        <input type="checkbox" id="status-updates" className="mr-2" />
-                        <label htmlFor="status-updates">Status change notifications</label>
-                      </div>
-                      <div className="flex items-center">
-                        <input type="checkbox" id="weekly-digest" className="mr-2" />
-                        <label htmlFor="weekly-digest">Weekly security digest</label>
-                      </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Email</label>
+                      <input 
+                        type="email" 
+                        value={user?.email} 
+                        className="w-full p-2 border rounded-md" 
+                        disabled
+                      />
                     </div>
-                  </div>
-                  
-                  <div className="flex justify-end">
-                    <Button>Save Settings</Button>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </main>
+                
+                <div>
+                  <h3 className="text-lg font-medium mb-2">Notification Preferences</h3>
+                  <div className="space-y-2">
+                    <div className="flex items-center">
+                      <input type="checkbox" id="email-notifications" className="mr-2" />
+                      <label htmlFor="email-notifications">Email notifications for new vulnerabilities</label>
+                    </div>
+                    <div className="flex items-center">
+                      <input type="checkbox" id="status-updates" className="mr-2" />
+                      <label htmlFor="status-updates">Status change notifications</label>
+                    </div>
+                    <div className="flex items-center">
+                      <input type="checkbox" id="weekly-digest" className="mr-2" />
+                      <label htmlFor="weekly-digest">Weekly security digest</label>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex justify-end">
+                  <Button>Save Settings</Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-background">
+      <SidebarProvider defaultOpen={true}>
+        <div className="flex w-full min-h-screen">
+          <Sidebar>
+            <SidebarHeader className="flex items-center justify-between px-4 py-2">
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center">
+                  <span className="text-primary-foreground font-bold text-sm">O</span>
+                </div>
+                <h1 className="text-xl font-bold">OpenFix</h1>
+              </div>
+            </SidebarHeader>
+            <SidebarContent>
+              <SidebarGroup>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {menuItems.map((item) => (
+                      <SidebarMenuItem key={item.title}>
+                        <SidebarMenuButton 
+                          onClick={() => setActiveView(item.view)}
+                          isActive={activeView === item.view}
+                          tooltip={item.title}
+                        >
+                          <item.icon className="h-5 w-5" />
+                          <span>{item.title}</span>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            </SidebarContent>
+            <SidebarFooter className="p-4">
+              <div className="flex flex-col gap-4">
+                <div className="text-sm text-sidebar-foreground/70">
+                  {user?.fullName || user?.email}
+                </div>
+                <Button variant="outline" size="sm" onClick={logout} className="w-full">
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Logout
+                </Button>
+              </div>
+            </SidebarFooter>
+          </Sidebar>
+          
+          <div className="flex-1 p-6">
+            <div className="container mx-auto">
+              <h2 className="text-2xl font-bold mb-6">{activeView.charAt(0).toUpperCase() + activeView.slice(1)}</h2>
+              {renderContent()}
+            </div>
+          </div>
+        </div>
+      </SidebarProvider>
     </div>
   );
 };
