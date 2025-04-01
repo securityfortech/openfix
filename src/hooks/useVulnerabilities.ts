@@ -3,20 +3,29 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Database } from "@/integrations/supabase/types";
+import { useOrganization } from "@/contexts/OrganizationContext";
 
 type Vulnerability = Database['public']['Tables']['vulnerabilities']['Row'];
 
 export function useVulnerabilities() {
+  const { currentOrganization } = useOrganization();
   const [vulnerabilities, setVulnerabilities] = useState<Vulnerability[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Fetch vulnerabilities from the database
   const fetchVulnerabilities = async () => {
+    if (!currentOrganization) {
+      setVulnerabilities([]);
+      setLoading(false);
+      return;
+    }
+    
     setLoading(true);
     try {
       const { data, error } = await supabase
         .from('vulnerabilities')
         .select('*')
+        .eq('organization_id', currentOrganization.id)
         .order('detected', { ascending: false });
 
       if (error) throw error;
@@ -38,6 +47,15 @@ export function useVulnerabilities() {
 
   // Handle scanning for new vulnerabilities
   const handleScanNow = async () => {
+    if (!currentOrganization) {
+      toast({
+        title: "Error",
+        description: "No organization selected",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     toast({
       title: "Scan Initiated",
       description: "Security scan has been started. Results will appear shortly.",
@@ -93,26 +111,30 @@ export function useVulnerabilities() {
   useEffect(() => {
     fetchVulnerabilities();
 
-    const channel = supabase
-      .channel('public:vulnerabilities')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'vulnerabilities'
-        },
-        (payload) => {
-          console.log('Real-time update received:', payload);
-          fetchVulnerabilities();
-        }
-      )
-      .subscribe();
+    // Only subscribe to realtime changes if we have an organization
+    if (currentOrganization) {
+      const channel = supabase
+        .channel('vulnerabilities-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'vulnerabilities',
+            filter: `organization_id=eq.${currentOrganization.id}`
+          },
+          (payload) => {
+            console.log('Real-time update received:', payload);
+            fetchVulnerabilities();
+          }
+        )
+        .subscribe();
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    }
+  }, [currentOrganization]);
 
   return {
     vulnerabilities,

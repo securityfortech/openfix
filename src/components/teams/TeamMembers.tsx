@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
@@ -7,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Trash2, UserPlus } from "lucide-react";
 import { EmptyState } from "@/components/teams/EmptyState";
 import { AddTeamMemberDialog } from "./AddTeamMemberDialog";
+import { useOrganization } from "@/contexts/OrganizationContext";
 
 type TeamMember = {
   id: string;
@@ -15,6 +17,7 @@ type TeamMember = {
   avatar_url: string | null;
   role: string;
   created_at: string;
+  organization_id: string;
 };
 
 interface TeamMembersProps {
@@ -22,16 +25,24 @@ interface TeamMembersProps {
 }
 
 export const TeamMembers: React.FC<TeamMembersProps> = ({ refreshTrigger }) => {
+  const { currentOrganization } = useOrganization();
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddDialog, setShowAddDialog] = useState(false);
   
   const fetchMembers = async () => {
+    if (!currentOrganization) {
+      setMembers([]);
+      setLoading(false);
+      return;
+    }
+    
     setLoading(true);
     try {
       const { data, error } = await supabase
         .from('team_members')
         .select('*')
+        .eq('organization_id', currentOrganization.id)
         .order('created_at', { ascending: false });
       
       if (error) throw error;
@@ -76,37 +87,49 @@ export const TeamMembers: React.FC<TeamMembersProps> = ({ refreshTrigger }) => {
   useEffect(() => {
     fetchMembers();
     
-    const channel = supabase
-      .channel('team_members_changes')
-      .on('postgres_changes', 
-        { 
-          event: '*', 
-          schema: 'public', 
-          table: 'team_members' 
-        }, 
-        payload => {
-          console.log('Real-time update received:', payload);
-          fetchMembers();
-        }
-      )
-      .subscribe();
-    
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [refreshTrigger]);
+    // Only set up realtime if we have an organization
+    if (currentOrganization) {
+      const channel = supabase
+        .channel('team_members_changes')
+        .on('postgres_changes', 
+          { 
+            event: '*', 
+            schema: 'public', 
+            table: 'team_members',
+            filter: `organization_id=eq.${currentOrganization.id}`
+          }, 
+          payload => {
+            console.log('Real-time update received:', payload);
+            fetchMembers();
+          }
+        )
+        .subscribe();
+      
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    }
+  }, [refreshTrigger, currentOrganization]);
+  
+  const hasNoOrganization = !currentOrganization;
   
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h3 className="text-lg font-medium">Contributors</h3>
-        <Button onClick={() => setShowAddDialog(true)}>
+        <h3 className="text-lg font-medium">
+          {currentOrganization ? `${currentOrganization.name} Contributors` : 'Contributors'}
+        </h3>
+        <Button onClick={() => setShowAddDialog(true)} disabled={hasNoOrganization}>
           <UserPlus className="h-4 w-4 mr-2" />
           Add Member
         </Button>
       </div>
       
-      {loading ? (
+      {hasNoOrganization ? (
+        <div className="text-center py-8 text-muted-foreground">
+          Please select or create an organization to manage team members.
+        </div>
+      ) : loading ? (
         <div className="flex justify-center py-8">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
         </div>

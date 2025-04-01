@@ -3,9 +3,11 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Asset, AssetStats } from "@/types/asset";
+import { useOrganization } from "@/contexts/OrganizationContext";
 
 export function useAssets() {
   const { toast } = useToast();
+  const { currentOrganization } = useOrganization();
   const [assets, setAssets] = useState<Asset[]>([]);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<AssetStats>({
@@ -16,11 +18,23 @@ export function useAssets() {
 
   // Fetch assets from the database
   const fetchAssets = async () => {
+    if (!currentOrganization) {
+      setAssets([]);
+      setStats({
+        total: 0,
+        vulnerable: 0,
+        secured: 0
+      });
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     try {
       const { data, error } = await supabase
         .from('assets')
-        .select('*');
+        .select('*')
+        .eq('organization_id', currentOrganization.id);
 
       if (error) throw error;
 
@@ -134,29 +148,33 @@ export function useAssets() {
     return `${diffDays} days ago`;
   };
 
-  // Set up realtime subscription
+  // Set up realtime subscription and fetch initial data
   useEffect(() => {
     fetchAssets();
 
-    const channel = supabase
-      .channel('table-db-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'assets'
-        },
-        () => {
-          fetchAssets();
-        }
-      )
-      .subscribe();
+    // Only subscribe to realtime updates if we have an organization
+    if (currentOrganization) {
+      const channel = supabase
+        .channel('assets-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'assets',
+            filter: `organization_id=eq.${currentOrganization.id}`
+          },
+          () => {
+            fetchAssets();
+          }
+        )
+        .subscribe();
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    }
+  }, [currentOrganization]);
 
   return {
     assets,

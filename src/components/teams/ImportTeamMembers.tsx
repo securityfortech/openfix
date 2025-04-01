@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -5,18 +6,29 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Github, GitlabIcon } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useOrganization } from "@/contexts/OrganizationContext";
 
 interface ImportTeamMembersProps {
   onImportSuccess: () => void;
 }
 
 export const ImportTeamMembers: React.FC<ImportTeamMembersProps> = ({ onImportSuccess }) => {
+  const { currentOrganization } = useOrganization();
   const [loading, setLoading] = useState(false);
   const [githubUsername, setGithubUsername] = useState("");
   const [gitlabUsername, setGitlabUsername] = useState("");
   
   // Mock function to simulate GitHub import
   const importFromGitHub = async () => {
+    if (!currentOrganization) {
+      toast({
+        title: "Error",
+        description: "No organization selected",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setLoading(true);
     try {
       // Simulating API call to GitHub
@@ -28,13 +40,15 @@ export const ImportTeamMembers: React.FC<ImportTeamMembersProps> = ({ onImportSu
           name: "John Smith",
           email: "john@example.com",
           avatar_url: null,
-          role: "contributor"
+          role: "contributor",
+          organization_id: currentOrganization.id
         },
         {
           name: "Samantha Jones",
           email: "samantha@example.com",
           avatar_url: null,
-          role: "contributor"
+          role: "contributor",
+          organization_id: currentOrganization.id
         }
       ];
       
@@ -68,6 +82,15 @@ export const ImportTeamMembers: React.FC<ImportTeamMembersProps> = ({ onImportSu
   
   // Mock function to simulate GitLab import
   const importFromGitLab = async () => {
+    if (!currentOrganization) {
+      toast({
+        title: "Error",
+        description: "No organization selected",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setLoading(true);
     try {
       // Simulating API call to GitLab
@@ -79,13 +102,15 @@ export const ImportTeamMembers: React.FC<ImportTeamMembersProps> = ({ onImportSu
           name: "Alex Rodriguez",
           email: "alex@example.com",
           avatar_url: null,
-          role: "reviewer"
+          role: "reviewer",
+          organization_id: currentOrganization.id
         },
         {
           name: "Priya Patel",
           email: "priya@example.com",
           avatar_url: null,
-          role: "contributor"
+          role: "contributor",
+          organization_id: currentOrganization.id
         }
       ];
       
@@ -164,7 +189,7 @@ export const ImportTeamMembers: React.FC<ImportTeamMembersProps> = ({ onImportSu
               <Button 
                 className="w-full" 
                 onClick={importFromGitHub}
-                disabled={loading || !githubUsername}
+                disabled={loading || !githubUsername || !currentOrganization}
               >
                 {loading ? (
                   <>
@@ -207,7 +232,7 @@ export const ImportTeamMembers: React.FC<ImportTeamMembersProps> = ({ onImportSu
               <Button 
                 className="w-full" 
                 onClick={importFromGitLab}
-                disabled={loading || !gitlabUsername}
+                disabled={loading || !gitlabUsername || !currentOrganization}
               >
                 {loading ? (
                   <>

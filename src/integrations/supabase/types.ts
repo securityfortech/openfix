@@ -18,6 +18,7 @@ export type Database = {
           ip_address: string | null
           last_scan: string
           name: string
+          organization_id: string | null
           status: string
           type: string
           updated_at: string
@@ -31,6 +32,7 @@ export type Database = {
           ip_address?: string | null
           last_scan?: string
           name: string
+          organization_id?: string | null
           status?: string
           type: string
           updated_at?: string
@@ -44,10 +46,69 @@ export type Database = {
           ip_address?: string | null
           last_scan?: string
           name?: string
+          organization_id?: string | null
           status?: string
           type?: string
           updated_at?: string
           user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assets_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organization_members: {
+        Row: {
+          created_at: string
+          id: string
+          organization_id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          organization_id: string
+          role: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          organization_id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organization_members_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organizations: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
         }
         Relationships: []
       }
@@ -58,6 +119,7 @@ export type Database = {
           email: string
           id: string
           name: string
+          organization_id: string | null
           role: string
         }
         Insert: {
@@ -66,6 +128,7 @@ export type Database = {
           email: string
           id?: string
           name: string
+          organization_id?: string | null
           role: string
         }
         Update: {
@@ -74,9 +137,18 @@ export type Database = {
           email?: string
           id?: string
           name?: string
+          organization_id?: string | null
           role?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "team_members_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       vulnerabilities: {
         Row: {
@@ -87,6 +159,7 @@ export type Database = {
           id: string
           location: string
           name: string
+          organization_id: string | null
           severity: string
           status: string
           updated_at: string
@@ -100,6 +173,7 @@ export type Database = {
           id?: string
           location: string
           name: string
+          organization_id?: string | null
           severity: string
           status?: string
           updated_at?: string
@@ -113,6 +187,7 @@ export type Database = {
           id?: string
           location?: string
           name?: string
+          organization_id?: string | null
           severity?: string
           status?: string
           updated_at?: string
@@ -124,6 +199,13 @@ export type Database = {
             columns: ["asset_id"]
             isOneToOne: false
             referencedRelation: "assets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vulnerabilities_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
         ]
