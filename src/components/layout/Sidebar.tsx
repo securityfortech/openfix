@@ -40,8 +40,6 @@ const Sidebar = () => {
         <h1 className="text-xl font-bold">OpenFix</h1>
       </div>
       <nav className="flex-1 pt-4 pb-4 overflow-y-auto">
-        <div className="px-4 mb-2 text-sm font-medium text-gray-400">Main</div>
-        
         {mainNavItems.map((item) => (
           <Link 
             key={item.path}
@@ -59,8 +57,6 @@ const Sidebar = () => {
             )}
           </Link>
         ))}
-        
-        <div className="px-4 mt-6 mb-2 text-sm font-medium text-gray-400">Settings</div>
         
         {settingsNavItems.map((item) => (
           <Link 
