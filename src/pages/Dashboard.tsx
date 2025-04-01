@@ -5,7 +5,6 @@ import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 import WelcomeSection from "@/components/dashboard/WelcomeSection";
 import MetricsCards from "@/components/dashboard/MetricsCards";
-import { VulnerabilityList } from "@/components/dashboard/VulnerabilityList";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -24,7 +23,6 @@ const Dashboard = () => {
         <main className="p-4 md:p-6 space-y-6">
           <WelcomeSection userName={userName} />
           <MetricsCards />
-          <VulnerabilityList />
         </main>
       </div>
     </div>
