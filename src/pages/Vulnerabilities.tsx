@@ -29,7 +29,7 @@ const Vulnerabilities = () => {
       <Sidebar />
 
       {/* Main content */}
-      <div className="flex-1 md:ml-64">
+      <div className="flex-1 md:ml-64 overflow-auto">
         <Header />
         <main className="p-4 md:p-6 space-y-6">
           <div className="flex justify-between items-center">
