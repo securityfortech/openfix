@@ -1,10 +1,9 @@
-
 import React from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Bell, Calendar, CreditCard, Download, LogOut, Settings, User as UserIcon, X, AlertTriangle, CheckCircle, Clock, Shield } from "lucide-react";
+import { Bell, LogOut, Settings, AlertTriangle, CheckCircle, Clock, Shield, Home, Database, Bot } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
@@ -27,20 +26,7 @@ const Dashboard = () => {
         <nav className="flex-1 pt-4 pb-4 overflow-y-auto">
           <div className="px-4 mb-2 text-sm font-medium text-gray-400">Main</div>
           <a href="#" className="flex items-center px-4 py-2 text-white bg-gray-800">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 mr-3"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-              />
-            </svg>
+            <Home className="h-5 w-5 mr-3" />
             Dashboard
           </a>
           <a href="#" className="flex items-center px-4 py-2 mt-1 text-gray-300 hover:bg-gray-800">
@@ -51,32 +37,18 @@ const Dashboard = () => {
             </Badge>
           </a>
           <a href="#" className="flex items-center px-4 py-2 mt-1 text-gray-300 hover:bg-gray-800">
-            <CheckCircle className="h-5 w-5 mr-3" />
-            Fixed Issues
-            <Badge variant="outline" className="ml-auto bg-gray-800 text-gray-300">
-              24
-            </Badge>
+            <Database className="h-5 w-5 mr-3" />
+            Assets
           </a>
           <a href="#" className="flex items-center px-4 py-2 mt-1 text-gray-300 hover:bg-gray-800">
-            <Clock className="h-5 w-5 mr-3" />
-            Recent Scans
+            <Bot className="h-5 w-5 mr-3" />
+            Assistant
           </a>
           
           <div className="px-4 mt-6 mb-2 text-sm font-medium text-gray-400">Settings</div>
           <a href="#" className="flex items-center px-4 py-2 mt-1 text-gray-300 hover:bg-gray-800">
             <Settings className="h-5 w-5 mr-3" />
-            General
-          </a>
-          <a href="#" className="flex items-center px-4 py-2 mt-1 text-gray-300 hover:bg-gray-800">
-            <CreditCard className="h-5 w-5 mr-3" />
-            Billing
-          </a>
-          <a href="#" className="flex items-center px-4 py-2 mt-1 text-gray-300 hover:bg-gray-800">
-            <Bell className="h-5 w-5 mr-3" />
-            Notifications
-            <Badge variant="outline" className="ml-auto bg-gray-800 text-gray-300">
-              4
-            </Badge>
+            Settings
           </a>
         </nav>
         <div className="p-4 border-t border-gray-800">
@@ -103,9 +75,6 @@ const Dashboard = () => {
           <div className="flex items-center gap-4">
             <Button variant="outline" size="icon" className="rounded-full">
               <Bell className="h-5 w-5" />
-            </Button>
-            <Button variant="outline" size="icon" className="rounded-full">
-              <Calendar className="h-5 w-5" />
             </Button>
             <Avatar className="h-9 w-9 md:hidden">
               <AvatarImage src="/placeholder.svg" />
