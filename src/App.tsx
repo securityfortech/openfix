@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
+import { useState } from "react";
 
 // Protected route component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -43,7 +44,8 @@ const AppRoutes = () => {
 };
 
 const App = () => {
-  const queryClient = new QueryClient();
+  // Create QueryClient inside the component
+  const [queryClient] = useState(() => new QueryClient());
   
   return (
     <QueryClientProvider client={queryClient}>
