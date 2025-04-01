@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { UserPlus, Loader2 } from "lucide-react";
 
 const Signup = () => {
@@ -15,25 +15,17 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { signup } = useAuth();
-  const { toast } = useToast();
-
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     try {
       await signup(fullName, email, password);
-      toast({
-        title: "Account created",
-        description: "Welcome to OpenFix!",
-      });
+      // Toast notification is handled in the auth context
     } catch (error) {
       console.error("Signup failed:", error);
-      toast({
-        title: "Signup failed",
-        description: "Unable to create your account. Please try again.",
-        variant: "destructive",
-      });
+      // Error is handled in the auth context
     } finally {
       setIsSubmitting(false);
     }
@@ -85,6 +77,7 @@ const Signup = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                minLength={6}
               />
             </div>
             <Button type="submit" className="w-full" disabled={isSubmitting}>
