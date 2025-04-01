@@ -1,9 +1,8 @@
 
 import React from "react";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { Header } from "@/components/layout/Header";
+import Sidebar from "@/components/layout/Sidebar";
+import Header from "@/components/layout/Header";
 import { useAuth } from "@/contexts/AuthContext";
-import { SettingsForm } from "@/components/settings/SettingsForm";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserSettings } from "@/components/settings/UserSettings";
 import { NotificationSettings } from "@/components/settings/NotificationSettings";
@@ -17,7 +16,7 @@ const Settings = () => {
     <div className="min-h-screen bg-gray-50">
       <Sidebar />
       <div className="md:pl-64">
-        <Header title="Settings" />
+        <Header />
         <main className="container mx-auto px-4 py-6">
           <div className="mb-6">
             <h1 className="text-2xl font-bold">Account Settings</h1>
