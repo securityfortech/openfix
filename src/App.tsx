@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { OrganizationProvider } from "./contexts/OrganizationContext";
 import Index from "./pages/Index";
@@ -34,12 +34,36 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+// Auth route component - redirects to dashboard if already logged in
+const AuthRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user, isLoading } = useAuth();
+  const location = useLocation();
+  
+  if (isLoading) {
+    return <div className="flex min-h-screen items-center justify-center">Loading...</div>;
+  }
+  
+  if (user && (location.pathname === "/login" || location.pathname === "/signup")) {
+    return <Navigate to="/dashboard" replace />;
+  }
+  
+  return <>{children}</>;
+};
+
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Index />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
+      <Route path="/login" element={
+        <AuthRoute>
+          <Login />
+        </AuthRoute>
+      } />
+      <Route path="/signup" element={
+        <AuthRoute>
+          <Signup />
+        </AuthRoute>
+      } />
       <Route path="/dashboard" element={
         <ProtectedRoute>
           <Dashboard />

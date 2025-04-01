@@ -1,13 +1,12 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
-import { toast } from "@/hooks/use-toast";
-import { UserPlus, Loader2 } from "lucide-react";
+import { Loader2, UserPlus } from "lucide-react";
 
 const Signup = () => {
   const [fullName, setFullName] = useState("");
@@ -15,14 +14,16 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { signup } = useAuth();
-  
+  const navigate = useNavigate();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     try {
       await signup(fullName, email, password);
-      // Toast notification is handled in the auth context
+      // Redirect to dashboard after successful signup
+      navigate("/dashboard");
     } catch (error) {
       console.error("Signup failed:", error);
       // Error is handled in the auth context

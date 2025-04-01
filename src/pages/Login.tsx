@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,6 +14,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { login } = useAuth();
+  const navigate = useNavigate();
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,6 +26,8 @@ const Login = () => {
         title: "Login successful",
         description: "Welcome back to OpenFix!",
       });
+      // Redirect to dashboard after successful login
+      navigate("/dashboard");
     } catch (error) {
       console.error("Login failed:", error);
       // Error is handled in the auth context
