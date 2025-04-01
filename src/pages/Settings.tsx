@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserSettings } from "@/components/settings/UserSettings";
 import { NotificationSettings } from "@/components/settings/NotificationSettings";
 import { SecuritySettings } from "@/components/settings/SecuritySettings";
+import { IntegrationSettings } from "@/components/settings/IntegrationSettings";
 
 const Settings = () => {
   const { user } = useAuth();
@@ -29,6 +30,7 @@ const Settings = () => {
                 <TabsTrigger value="user">User Profile</TabsTrigger>
                 <TabsTrigger value="notifications">Notifications</TabsTrigger>
                 <TabsTrigger value="security">Security</TabsTrigger>
+                <TabsTrigger value="integrations">Integrations</TabsTrigger>
               </TabsList>
               
               <TabsContent value="user">
@@ -41,6 +43,10 @@ const Settings = () => {
               
               <TabsContent value="security">
                 <SecuritySettings />
+              </TabsContent>
+              
+              <TabsContent value="integrations">
+                <IntegrationSettings />
               </TabsContent>
             </Tabs>
           </div>
