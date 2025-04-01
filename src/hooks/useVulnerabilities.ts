@@ -23,8 +23,7 @@ export function useVulnerabilities() {
         .from('vulnerabilities')
         .select(`
           *,
-          assets (*),
-          team_members (*)
+          assets (*)
         `)
         .eq('organization_id', currentOrganization.id)
         .order('created_at', { ascending: false });
