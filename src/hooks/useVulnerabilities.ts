@@ -3,20 +3,12 @@ import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { formatDistanceToNow } from "date-fns";
-import { useOrganization } from "@/contexts/OrganizationContext";
 
 export function useVulnerabilities() {
-  const { currentOrganization } = useOrganization();
   const [vulnerabilities, setVulnerabilities] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchVulnerabilities = useCallback(async () => {
-    if (!currentOrganization) {
-      setVulnerabilities([]);
-      setLoading(false);
-      return;
-    }
-    
     try {
       setLoading(true);
       const { data, error } = await supabase
@@ -26,7 +18,6 @@ export function useVulnerabilities() {
           assets (*),
           team_members (*)
         `)
-        .eq('organization_id', currentOrganization.id)
         .order('created_at', { ascending: false });
       
       if (error) {
@@ -44,7 +35,7 @@ export function useVulnerabilities() {
     } finally {
       setLoading(false);
     }
-  }, [currentOrganization]);
+  }, []);
 
   useEffect(() => {
     fetchVulnerabilities();

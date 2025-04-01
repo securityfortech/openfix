@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { useOrganization } from "@/contexts/OrganizationContext";
 
 interface AddTeamMemberDialogProps {
   open: boolean;
@@ -20,7 +19,6 @@ export const AddTeamMemberDialog: React.FC<AddTeamMemberDialogProps> = ({
   onOpenChange,
   onMemberAdded
 }) => {
-  const { currentOrganization } = useOrganization();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("contributor");
@@ -28,15 +26,6 @@ export const AddTeamMemberDialog: React.FC<AddTeamMemberDialogProps> = ({
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!currentOrganization) {
-      toast({
-        title: "Error",
-        description: "No organization selected",
-        variant: "destructive",
-      });
-      return;
-    }
     
     setLoading(true);
     
@@ -47,8 +36,7 @@ export const AddTeamMemberDialog: React.FC<AddTeamMemberDialogProps> = ({
           { 
             name, 
             email, 
-            role,
-            organization_id: currentOrganization.id 
+            role
           }
         ]);
       
@@ -124,7 +112,7 @@ export const AddTeamMemberDialog: React.FC<AddTeamMemberDialogProps> = ({
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit" disabled={loading || !currentOrganization}>
+            <Button type="submit" disabled={loading}>
               {loading ? (
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
