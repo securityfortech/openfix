@@ -21,17 +21,17 @@ import {
   User 
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { OrganizationSwitcher } from "@/components/organizations/OrganizationSwitcher";
 
 const Header = () => {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const { setTheme, theme } = useTheme();
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
 
   const handleSignOut = async () => {
     try {
-      await signOut();
+      await user?.signOut(); // Call signOut from the user object
     } catch (error) {
       console.error('Error signing out:', error);
     }

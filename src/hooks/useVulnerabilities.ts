@@ -1,11 +1,22 @@
-
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-import { Database } from "@/integrations/supabase/types";
 import { useOrganization } from "@/contexts/OrganizationContext";
 
-type Vulnerability = Database['public']['Tables']['vulnerabilities']['Row'];
+type Vulnerability = {
+  id: string;
+  name: string;
+  location: string;
+  description: string | null;
+  severity: string;
+  status: string;
+  detected: string;
+  user_id: string | null;
+  asset_id: string | null;
+  organization_id: string | null;
+  created_at: string;
+  updated_at: string;
+};
 
 export function useVulnerabilities() {
   const { currentOrganization } = useOrganization();

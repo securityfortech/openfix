@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
@@ -9,16 +8,7 @@ import { Trash2, UserPlus } from "lucide-react";
 import { EmptyState } from "@/components/teams/EmptyState";
 import { AddTeamMemberDialog } from "./AddTeamMemberDialog";
 import { useOrganization } from "@/contexts/OrganizationContext";
-
-type TeamMember = {
-  id: string;
-  name: string;
-  email: string;
-  avatar_url: string | null;
-  role: string;
-  created_at: string;
-  organization_id: string;
-};
+import { TeamMember } from "@/types/team-member";
 
 interface TeamMembersProps {
   refreshTrigger: number;
@@ -87,7 +77,6 @@ export const TeamMembers: React.FC<TeamMembersProps> = ({ refreshTrigger }) => {
   useEffect(() => {
     fetchMembers();
     
-    // Only set up realtime if we have an organization
     if (currentOrganization) {
       const channel = supabase
         .channel('team_members_changes')
