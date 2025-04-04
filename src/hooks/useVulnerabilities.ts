@@ -15,6 +15,7 @@ export function useVulnerabilities() {
     
     try {
       setLoading(true);
+      console.log("Fetching vulnerabilities for user:", user.id);
       // Use a simpler query structure to avoid deep type instantiation
       const { data, error } = await supabase
         .from('vulnerabilities')
@@ -30,6 +31,7 @@ export function useVulnerabilities() {
         throw error;
       }
       
+      console.log("Vulnerabilities fetched:", data);
       setVulnerabilities(data || []);
     } catch (error) {
       console.error('Error fetching vulnerabilities:', error);
@@ -49,7 +51,7 @@ export function useVulnerabilities() {
     }
   }, [fetchVulnerabilities, user]);
 
-  // Updated to filter by severity instead of status
+  // Filter by severity instead of status
   const getFilteredVulnerabilities = (filter) => {
     if (filter === 'all') {
       return vulnerabilities;
