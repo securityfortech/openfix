@@ -14,14 +14,12 @@ const Dashboard = () => {
   const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User';
   
   return (
-    <div className="flex h-screen bg-background">
-      {/* Sidebar */}
+    <div className="flex min-h-screen bg-background">
       <Sidebar />
 
-      {/* Main content */}
-      <div className="flex-1 md:ml-64 overflow-auto">
+      <div className="flex-1 md:ml-64">
         <Header />
-        <main className="p-6 space-y-8 max-w-7xl mx-auto">
+        <main className="p-4 md:p-6 max-w-7xl mx-auto space-y-6">
           <WelcomeSection userName={userName} />
           <MetricsCards />
           <VulnerabilityList />

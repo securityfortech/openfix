@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { LucideIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface SidebarNavItemProps {
   path: string;
@@ -16,14 +17,17 @@ const SidebarNavItem = ({ path, icon: Icon, label, badge, isActive }: SidebarNav
   return (
     <Link 
       to={path}
-      className={`flex items-center px-4 py-2 mt-1 text-gray-300 ${
-        isActive ? "bg-gray-800 text-white" : "hover:bg-gray-800"
-      }`}
+      className={cn(
+        "flex items-center h-10 px-4 py-2 my-1 mx-2 text-sm rounded-md transition-colors",
+        isActive 
+          ? "bg-accent text-accent-foreground font-medium" 
+          : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+      )}
     >
-      <Icon className="h-5 w-5 mr-3" />
-      {label}
+      <Icon className="h-4 w-4 mr-3 shrink-0" />
+      <span>{label}</span>
       {badge !== undefined && (
-        <Badge variant="outline" className="ml-auto bg-gray-800 text-gray-300">
+        <Badge variant="secondary" className="ml-auto h-5 min-w-5 px-1.5 rounded-full">
           {badge !== null ? badge : '...'}
         </Badge>
       )}

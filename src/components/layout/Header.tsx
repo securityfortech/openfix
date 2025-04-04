@@ -18,6 +18,7 @@ import {
   Moon, 
   Settings, 
   Sun, 
+  Menu,
   User 
 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -40,29 +41,34 @@ const Header = () => {
   const userInitial = userName?.charAt(0)?.toUpperCase() || 'U';
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
-      {isMobile && <div className="w-4"></div>}
+    <header className="sticky top-0 z-20 flex h-16 items-center border-b bg-card px-4 md:px-6">
+      {isMobile && (
+        <Button variant="ghost" size="icon" className="md:hidden mr-2">
+          <Menu className="h-5 w-5" />
+          <span className="sr-only">Toggle menu</span>
+        </Button>
+      )}
 
-      <div className="flex-1 flex items-center">
-        {/* Logo or branding could go here */}
+      <div className="flex-1">
         <h1 className="text-xl font-semibold hidden md:block">Security Dashboard</h1>
       </div>
 
       <div className="flex items-center gap-2">
-        <Button variant="outline" size="icon" className="rounded-full" asChild>
+        <Button variant="ghost" size="icon" className="relative" asChild>
           <Link to="#notifications">
-            <Bell className="h-4 w-4" />
+            <Bell className="h-5 w-5" />
             <span className="sr-only">Notifications</span>
+            <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-destructive"></span>
           </Link>
         </Button>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon" className="rounded-full">
+            <Button variant="ghost" size="icon">
               {theme === "light" ? (
-                <Sun className="h-4 w-4" />
+                <Sun className="h-5 w-5" />
               ) : (
-                <Moon className="h-4 w-4" />
+                <Moon className="h-5 w-5" />
               )}
               <span className="sr-only">Toggle theme</span>
             </Button>
@@ -84,7 +90,7 @@ const Header = () => {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon" className="rounded-full">
+            <Button variant="ghost" size="icon" className="relative h-8 w-8 rounded-full">
               <Avatar className="h-8 w-8">
                 <AvatarImage src={user?.user_metadata?.avatar_url || ''} alt={userName} />
                 <AvatarFallback>{userInitial}</AvatarFallback>
@@ -95,13 +101,13 @@ const Header = () => {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link to="/settings" className="cursor-pointer">
+              <Link to="/settings" className="cursor-pointer flex items-center">
                 <User className="h-4 w-4 mr-2" />
                 Profile
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link to="/settings" className="cursor-pointer">
+              <Link to="/settings" className="cursor-pointer flex items-center">
                 <Settings className="h-4 w-4 mr-2" />
                 Settings
               </Link>

@@ -29,62 +29,74 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#3B82F6",     // Soft Blue
-          foreground: "#FFFFFF",
-          light: "#93C5FD",       // Light Blue
-          dark: "#1E40AF"         // Dark Blue
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "#000000",     // Black
-          foreground: "#FFFFFF",
-          light: "#4B5563",       // Dark Gray
-          dark: "#111827"         // Very Dark Gray
-        },
-        accent: {
-          DEFAULT: "#10B981",     // Soft Green
-          foreground: "#FFFFFF"
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
         },
         destructive: {
-          DEFAULT: "#EF4444",     // Soft Red
-          foreground: "#FFFFFF"
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
-          DEFAULT: "#F3F4F6",     // Very Light Gray
-          foreground: "#6B7280"   // Gray
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
         },
-        background: {
-          DEFAULT: "#FFFFFF",     // White
-          dark: "#0F172A"         // Very Dark Blue-Gray
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
         },
-        foreground: {
-          DEFAULT: "#000000",     // Black
-          dark: "#FFFFFF"         // White
-        }
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
       },
       boxShadow: {
-        'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-        'medium': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+        'sm': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+        'DEFAULT': '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+        'md': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+        'lg': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
       },
       borderRadius: {
-        'lg': '0.75rem',   // 12px
-        'xl': '1rem',       // 16px
-        '2xl': '1.5rem'     // 24px
+        'lg': 'var(--radius)',
+        'md': 'calc(var(--radius) - 2px)',
+        'sm': 'calc(var(--radius) - 4px)',
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
       typography: {
         DEFAULT: {
           css: {
-            color: '#000000',
+            color: 'hsl(var(--foreground))',
             a: {
-              color: '#3B82F6',
+              color: 'hsl(var(--primary))',
               textDecoration: 'none',
               '&:hover': {
-                color: '#1E40AF'
+                color: 'hsl(var(--primary) / 0.8)'
               }
             }
           }
         }
       }
-    }
+    },
   },
   plugins: [
     require("tailwindcss-animate"),

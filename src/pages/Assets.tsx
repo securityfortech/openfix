@@ -21,25 +21,23 @@ const Assets = () => {
   } = useAssets();
 
   return (
-    <div className="flex h-screen bg-background">
-      {/* Sidebar */}
+    <div className="flex min-h-screen bg-background">
       <Sidebar />
 
-      {/* Main content */}
       <div className="flex-1 md:ml-64">
         <Header />
-        <main className="p-6 space-y-8 max-w-7xl mx-auto">
+        <main className="p-4 md:p-6 max-w-7xl mx-auto space-y-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <h2 className="text-3xl font-bold tracking-tight">Assets</h2>
-              <p className="text-muted-foreground mt-1">Manage and monitor your application assets securely</p>
+              <h2 className="text-2xl font-bold tracking-tight">Assets</h2>
+              <p className="text-muted-foreground text-sm">Manage and monitor your application assets securely</p>
             </div>
             <AddAssetForm />
           </div>
           
           <AssetStats stats={stats} />
           
-          <div className="bg-card rounded-xl border shadow-sm">
+          <div className="bg-card rounded-lg border shadow-sm">
             <AssetTabs
               assets={assets}
               loading={loading}

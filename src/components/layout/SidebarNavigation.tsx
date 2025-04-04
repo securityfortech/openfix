@@ -30,28 +30,32 @@ const SidebarNavigation = ({ vulnerabilityCount }: SidebarNavigationProps) => {
   };
   
   return (
-    <nav className="flex-1 pt-4 pb-4 overflow-y-auto">
-      {mainNavItems.map((item) => (
-        <SidebarNavItem 
-          key={item.path}
-          path={item.path}
-          icon={item.icon}
-          label={item.label}
-          badge={item.badge}
-          isActive={isActive(item.path)}
-        />
-      ))}
+    <div className="px-2 py-4">
+      <div className="mb-6">
+        {mainNavItems.map((item) => (
+          <SidebarNavItem 
+            key={item.path}
+            path={item.path}
+            icon={item.icon}
+            label={item.label}
+            badge={item.badge}
+            isActive={isActive(item.path)}
+          />
+        ))}
+      </div>
       
-      {settingsNavItems.map((item) => (
-        <SidebarNavItem 
-          key={item.path}
-          path={item.path}
-          icon={item.icon}
-          label={item.label}
-          isActive={isActive(item.path)}
-        />
-      ))}
-    </nav>
+      <div className="pt-4 border-t border-border">
+        {settingsNavItems.map((item) => (
+          <SidebarNavItem 
+            key={item.path}
+            path={item.path}
+            icon={item.icon}
+            label={item.label}
+            isActive={isActive(item.path)}
+          />
+        ))}
+      </div>
+    </div>
   );
 };
 
