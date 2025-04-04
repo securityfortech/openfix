@@ -11,12 +11,16 @@ export function useVulnerabilities() {
   const [loading, setLoading] = useState(true);
 
   const fetchVulnerabilities = useCallback(async () => {
-    if (!user) return;
+    if (!user) {
+      setVulnerabilities([]);
+      setLoading(false);
+      return;
+    }
     
     try {
       setLoading(true);
       console.log("Fetching vulnerabilities for user:", user.id);
-      // Use a simpler query structure to avoid deep type instantiation
+      
       const { data, error } = await supabase
         .from('vulnerabilities')
         .select(`
@@ -28,10 +32,11 @@ export function useVulnerabilities() {
         .order('created_at', { ascending: false });
       
       if (error) {
+        console.error("Supabase error:", error);
         throw error;
       }
       
-      console.log("Vulnerabilities fetched:", data);
+      console.log("Vulnerabilities fetched:", data ? data.length : 0);
       setVulnerabilities(data || []);
     } catch (error) {
       console.error('Error fetching vulnerabilities:', error);
@@ -40,16 +45,15 @@ export function useVulnerabilities() {
         description: "Failed to load vulnerabilities",
         variant: "destructive",
       });
+      setVulnerabilities([]);
     } finally {
       setLoading(false);
     }
   }, [user]);
 
   useEffect(() => {
-    if (user) {
-      fetchVulnerabilities();
-    }
-  }, [fetchVulnerabilities, user]);
+    fetchVulnerabilities();
+  }, [fetchVulnerabilities]);
 
   // Filter by severity instead of status
   const getFilteredVulnerabilities = (filter) => {
@@ -63,9 +67,12 @@ export function useVulnerabilities() {
   };
 
   const formatTimeAgo = (timestamp) => {
+    if (!timestamp) return 'Unknown time';
+    
     try {
       return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
     } catch (error) {
+      console.error('Error formatting time:', error);
       return 'Unknown time';
     }
   };

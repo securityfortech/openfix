@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
@@ -20,6 +20,10 @@ const Vulnerabilities = () => {
     refetchVulnerabilities
   } = useVulnerabilities();
   
+  useEffect(() => {
+    console.log("Vulnerabilities page rendering with", vulnerabilities.length, "vulnerabilities and loading:", loading);
+  }, [vulnerabilities, loading]);
+
   return (
     <div className="flex min-h-screen bg-background">
       <Sidebar />
@@ -38,12 +42,18 @@ const Vulnerabilities = () => {
           <VulnerabilityStats stats={stats} />
           
           <div className="bg-card rounded-lg border shadow-sm">
-            <VulnerabilityTabs
-              vulnerabilities={vulnerabilities}
-              loading={loading}
-              getFilteredVulnerabilities={getFilteredVulnerabilities}
-              formatTimeAgo={formatTimeAgo}
-            />
+            {loading ? (
+              <div className="flex justify-center items-center py-12">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              </div>
+            ) : (
+              <VulnerabilityTabs
+                vulnerabilities={vulnerabilities}
+                loading={loading}
+                getFilteredVulnerabilities={getFilteredVulnerabilities}
+                formatTimeAgo={formatTimeAgo}
+              />
+            )}
           </div>
         </main>
       </div>
