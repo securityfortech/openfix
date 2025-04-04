@@ -9,15 +9,17 @@ export function useVulnerabilities() {
   const { user } = useAuth();
   const [vulnerabilities, setVulnerabilities] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const fetchVulnerabilities = useCallback(async () => {
-    if (!user) {
-      setVulnerabilities([]);
-      setLoading(false);
-      return;
-    }
-    
     try {
+      if (!user) {
+        console.log("No user found, skipping vulnerability fetch");
+        setVulnerabilities([]);
+        setLoading(false);
+        return;
+      }
+      
       setLoading(true);
       console.log("Fetching vulnerabilities for user:", user.id);
       
@@ -36,13 +38,15 @@ export function useVulnerabilities() {
         throw error;
       }
       
-      console.log("Vulnerabilities fetched:", data ? data.length : 0);
+      console.log("Vulnerabilities fetched:", data ? data.length : 0, "items");
       setVulnerabilities(data || []);
+      setError(null);
     } catch (error) {
       console.error('Error fetching vulnerabilities:', error);
+      setError(error.message);
       toast({
         title: "Error loading vulnerabilities",
-        description: "Failed to load vulnerabilities",
+        description: "Failed to load vulnerabilities: " + error.message,
         variant: "destructive",
       });
       setVulnerabilities([]);
@@ -52,6 +56,7 @@ export function useVulnerabilities() {
   }, [user]);
 
   useEffect(() => {
+    console.log("useVulnerabilities hook initialized");
     fetchVulnerabilities();
   }, [fetchVulnerabilities]);
 
@@ -79,12 +84,14 @@ export function useVulnerabilities() {
 
   // Expose refetch function to allow manual refresh
   const refetchVulnerabilities = () => {
+    console.log("Manually refetching vulnerabilities");
     fetchVulnerabilities();
   };
 
   return { 
     vulnerabilities, 
     loading, 
+    error,
     getFilteredVulnerabilities,
     formatTimeAgo,
     refetchVulnerabilities

@@ -8,6 +8,8 @@ import { VulnerabilityTabs } from "@/components/vulnerabilities/VulnerabilityTab
 import { useVulnerabilityStats } from "@/hooks/useVulnerabilityStats";
 import { useVulnerabilities } from "@/hooks/useVulnerabilities";
 import AddVulnerabilityForm from "@/components/vulnerabilities/AddVulnerabilityForm";
+import { Button } from "@/components/ui/button";
+import { RefreshCw } from "lucide-react";
 
 const Vulnerabilities = () => {
   const { user } = useAuth();
@@ -15,14 +17,26 @@ const Vulnerabilities = () => {
   const { 
     vulnerabilities, 
     loading, 
+    error,
     getFilteredVulnerabilities,
     formatTimeAgo,
     refetchVulnerabilities
   } = useVulnerabilities();
   
   useEffect(() => {
-    console.log("Vulnerabilities page rendering with", vulnerabilities.length, "vulnerabilities and loading:", loading);
-  }, [vulnerabilities, loading]);
+    console.log("Vulnerabilities page rendering with", vulnerabilities.length, "vulnerabilities, loading:", loading, "error:", error);
+  }, [vulnerabilities, loading, error]);
+
+  if (!user) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold">Please log in</h2>
+          <p className="text-muted-foreground mt-2">You need to be logged in to view this page</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -36,7 +50,18 @@ const Vulnerabilities = () => {
               <h2 className="text-2xl font-bold tracking-tight">Vulnerabilities</h2>
               <p className="text-muted-foreground text-sm">Monitor and manage security vulnerabilities</p>
             </div>
-            <AddVulnerabilityForm onSuccess={refetchVulnerabilities} />
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                size="icon" 
+                onClick={() => refetchVulnerabilities()}
+                disabled={loading}
+              >
+                <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+                <span className="sr-only">Refresh</span>
+              </Button>
+              <AddVulnerabilityForm onSuccess={refetchVulnerabilities} />
+            </div>
           </div>
           
           <VulnerabilityStats stats={stats} />
@@ -45,6 +70,20 @@ const Vulnerabilities = () => {
             {loading ? (
               <div className="flex justify-center items-center py-12">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              </div>
+            ) : error ? (
+              <div className="flex justify-center items-center py-12 text-center">
+                <div>
+                  <h3 className="text-lg font-medium text-destructive mb-2">Error loading vulnerabilities</h3>
+                  <p className="text-muted-foreground max-w-sm mx-auto text-sm">{error}</p>
+                  <Button 
+                    variant="outline" 
+                    onClick={refetchVulnerabilities} 
+                    className="mt-4"
+                  >
+                    Try Again
+                  </Button>
+                </div>
               </div>
             ) : (
               <VulnerabilityTabs
