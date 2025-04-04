@@ -28,31 +28,38 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        // Enhanced contrast color palette
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-          light: "#D6BCFA",       // Light Purple
-          dark: "#1A1F2C"         // Dark Purple
+          DEFAULT: "#3B82F6",     // Soft Blue
+          foreground: "#FFFFFF",
+          light: "#93C5FD",       // Light Blue
+          dark: "#1E40AF"         // Dark Blue
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-          light: "#1EAEDB",       // Bright Blue
-          dark: "#0A74A3"         // Darker Blue
+          DEFAULT: "#000000",     // Black
+          foreground: "#FFFFFF",
+          light: "#4B5563",       // Dark Gray
+          dark: "#111827"         // Very Dark Gray
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "#10B981",     // Soft Green
+          foreground: "#FFFFFF"
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "#EF4444",     // Soft Red
+          foreground: "#FFFFFF"
         },
         muted: {
-          DEFAULT: "#F1F5F9",
-          foreground: "#64748B",
+          DEFAULT: "#F3F4F6",     // Very Light Gray
+          foreground: "#6B7280"   // Gray
         },
+        background: {
+          DEFAULT: "#FFFFFF",     // White
+          dark: "#0F172A"         // Very Dark Blue-Gray
+        },
+        foreground: {
+          DEFAULT: "#000000",     // Black
+          dark: "#FFFFFF"         // White
+        }
       },
       boxShadow: {
         'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
@@ -66,12 +73,12 @@ export default {
       typography: {
         DEFAULT: {
           css: {
-            color: '#1A1F2C',
+            color: '#000000',
             a: {
-              color: '#6E59A5',
+              color: '#3B82F6',
               textDecoration: 'none',
               '&:hover': {
-                color: '#9b87f5'
+                color: '#1E40AF'
               }
             }
           }
